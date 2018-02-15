@@ -2,6 +2,44 @@
 
 using namespace std;
 
+constexpr double cm_per_m = 100;
+constexpr double cm_per_in = 2.54;
+constexpr double in_per_ft = 12;
+
+// Check if unit is one of allowed units (cm, m, in, ft)
+bool checkUnit(string unit)
+{
+    if (unit == "cm" || unit == "m" || unit == "in" || unit == "ft")
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+// Calculate values to centimeters
+double calculateToCm(double value, string unit)
+{
+    if (unit == "m")
+    {
+        return value * cm_per_m;
+    }
+    else if (unit == "in")
+    {
+        return value * cm_per_in;
+    }
+    else if (unit == "ft")
+    {
+        return value * in_per_ft * cm_per_in;
+    }
+    else
+    {
+        return value;
+    }
+}
+
 int main()
 {
     string input_str;
@@ -12,11 +50,6 @@ int main()
     double largest_num;
     double largest_num_cm;
     int num_of_values = 0;
-
-
-    constexpr double cm_per_m = 100;
-    constexpr double cm_per_in = 2.54;
-    constexpr double in_per_ft = 12;
 
     while (true)
     {   
@@ -61,31 +94,17 @@ int main()
                 }
             }
             
-            if (unit != "cm" && unit != "m" && unit != "in" && unit != "ft")
+            // If unit is correct, move on, else continue from the beginning of the loop
+            if (checkUnit(unit)) {}
+            else
             {
-                cout << "Invalid input. Please try again" << '\n';
                 continue;
             }
 
             input_num = stod(input_num_str);
-     
-            // calculate unit and input_num to 'cm'
-            if (unit == "m")
-            {
-                input_num_cm = input_num * cm_per_m;
-            }
-            else if (unit == "in")
-            {
-                input_num_cm = input_num * cm_per_in;
-            }
-            else if (unit == "ft")
-            {
-                input_num_cm = input_num * in_per_ft * cm_per_in;
-            }
-            else
-            {
-                input_num_cm = input_num;
-            }
+
+            // Calculate value to centimeters
+            input_num_cm = calculateToCm(input_num, unit);
 
             cout << input_num_cm << " cm" << '\n';
 
