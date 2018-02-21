@@ -1,4 +1,6 @@
 #include <iostream> 
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -43,13 +45,18 @@ double calculateToCm(double value, string unit)
 int main()
 {
     string input_str;
+    string smallest_num_unit;
+    string largest_num_unit;
     double input_num;
     double input_num_cm;
     double smallest_num;
     double smallest_num_cm;
     double largest_num;
     double largest_num_cm;
+    double sum_of_values_cm = 0;
     int num_of_values = 0;
+
+    vector<double> vvalues;
 
     while (true)
     {   
@@ -83,13 +90,11 @@ int main()
                 else if (input_str[i] == ' ')
                 {
                     unit = input_str.substr(i+1);
-                    cout << "Unit: " << unit << "\n";
                     break;
                 }
                 else
                 {
                     unit = input_str.substr(i);
-                    cout << "Unit: " << unit << "\n";
                     break;
                 }
             }
@@ -112,9 +117,10 @@ int main()
             {
                 largest_num = input_num;
                 largest_num_cm = input_num_cm;
+                largest_num_unit = unit;
                 smallest_num = input_num;
                 smallest_num_cm = input_num_cm;
-                ++num_of_values;
+                smallest_num_unit = unit;
                 cout << "Largest=" << largest_num << unit << ". Smallest="; 
                 cout << smallest_num << unit << '\n';
             }
@@ -122,20 +128,34 @@ int main()
             {
                 largest_num = input_num;
                 largest_num_cm = input_num_cm;
-                ++num_of_values;
+                largest_num_unit = unit;
+
                 cout << largest_num << unit << " - the largest so far." << '\n';
             }
             else if (input_num_cm < smallest_num_cm)
             {
                 smallest_num = input_num;
                 smallest_num_cm = input_num_cm;
-                ++num_of_values;
+                smallest_num_unit = unit;
                 cout << smallest_num << unit << " - the smallest so far." << '\n';
             }
-        } 
+        ++num_of_values;
+        sum_of_values_cm += input_num_cm;
+        vvalues.push_back(input_num_cm / cm_per_m);
+        }
     }
 
+    cout << "The smallest value is " << smallest_num << " " << smallest_num_unit << ".\n";
+    cout << "The largest value is " << largest_num << " " << largest_num_unit << ".\n";
     cout << "Numbers of values: " << num_of_values << '\n';
+    cout << "Sum of values: " << sum_of_values_cm / cm_per_m << " m." << '\n';
+
+    sort(vvalues.begin(), vvalues.end());
+    for (auto i = vvalues.begin(); i != vvalues.end(); ++i)
+    {
+        cout << *i << "m ";
+    }
+    cout << endl;
 
     return 0;
 }
