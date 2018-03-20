@@ -21,33 +21,27 @@ bool isNumber(string x)
 
 pair<int, int> findMode(vector<int> vx)
 {
-    sort(vx.begin(), vx.end());
-
-    int mode_occurence = 0;
-    int occurence = 0;
-    int prev_x, x, mode;
-
-    for (auto i = vx.begin(); i != vx.end(); ++i)
+    int mode_occurrence = 1;
+    int _count = 1;
+    int mode = vx[0];
+    
+    for (size_t _prev = 0, _next = 1; _next < vx.size(); ++_prev, ++_next) 
     {
-        x = *i;
-
-        if (prev_x != x)
+        if (vx[_prev] == vx[_next])
         {
-            occurence = 1;
+            ++_count;
         }
         else
         {
-            ++occurence;
+            if (_count > mode_occurrence)
+            {
+                mode = vx[_prev];
+                mode_occurrence = _count;
+            }
+            _count = 1;
         }
-
-        if (occurence > mode_occurence)
-        {
-            mode_occurence = occurence;
-            mode = x;
-        }
-        prev_x = x;
     }
-    return make_pair(mode_occurence, mode);
+    return make_pair(mode_occurrence, mode);
 }
 
 int main()
@@ -81,9 +75,19 @@ int main()
         }
     }
 
-    auto [mode_occurence, mode] = findMode(vnumbers);
+    sort(vnumbers.begin(), vnumbers.end());
 
-    cout << "Mode: " << mode << ", occurence: " << mode_occurence << endl;
+    auto [mode_occurrence, mode] = findMode(vnumbers);
+
+    if (mode_occurrence < 1)
+    {
+        cout << "Your list of numbers is empty, no mode found." << '\n';
+    }
+    else 
+    {
+        cout << "Mode: " << mode << ", occurence: " << mode_occurrence << endl;
+        cout << "Min: " << vnumbers[0] << ", max: " << vnumbers.back() << endl;
+    }
 
     return 0;
 }
