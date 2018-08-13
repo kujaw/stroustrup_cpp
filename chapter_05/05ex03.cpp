@@ -1,24 +1,40 @@
+// Absolute zero is the lowest temperature that can be reached; it is –273.15°C, or 0K. The above
+// program, even when corrected, will produce erroneous results when given a temperature below
+// this. Place a check in the main program that will produce an error if a temperature is given
+// below –273.15°C.
+
 #include "../std_lib_facilities.h"
 using namespace std;
 
+float abs_zero = -273.15; // absolute zero in Celsius
+
 double ctok(double c) // converts Celsius to Kelvin
 {
-    double k = c + 273.15;
+    double k = c + abs_zero;
     return k;
 }
 
 int main() 
 {
     double c; // declare input variable
-    try
+
+
+    while (true)
     {
+        cout << "Please enter the temperature in Celsius: ";
         cin >> c; // retrieve temperature to input variable
+        
+        if (c < abs_zero)
+        {
+            error("Temperature below absolute zero. Please enter correct temperature value, above -273.15.");
+            continue;
+        }
+        else
+        {
+            break;
+        }
     }
-    catch 
-    if (c < -273.15)
-    {
-        cerr << "error: " << e.what() << '\n';
-    }
+
     double k = ctok(c); // convert temperature
-    cout << k << '\n' ; // print out temperature
+    cout << c << " Celsius is " << k << " Kelvins." << endl;
 }
